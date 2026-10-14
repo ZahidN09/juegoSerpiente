@@ -9,7 +9,7 @@ const COLOR_CUADRICULA = "#1f1f3d";
 const COLOR_PARTE = "#10b981";
 const COLOR_BORDE_PARTE = "#34d399";
 
-const serpiente = [{x:10,y:1},{x:5,y:7},{x:12,y:15}];
+const serpiente = [{x:0,y:0},{x:1,y:0},{x:2,y:0}];
 
 // Primera pintura del juego al cargar la página
 dibujarTodo();
