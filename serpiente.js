@@ -75,3 +75,15 @@ function moverDerecha() {
   serpiente.unshift(nueva_posicion);
   serpiente.pop();
 }
+
+function cambiarDireccion(direccion){
+  switch(direccion){
+    case "derecha":
+      moverDerecha();
+      dibujarTodo();
+      break;
+    default:
+      break;
+  }
+
+}
