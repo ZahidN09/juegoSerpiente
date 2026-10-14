@@ -9,6 +9,7 @@ const COLOR_CUADRICULA = "#1f1f3d";
 const COLOR_PARTE = "#10b981";
 const COLOR_BORDE_PARTE = "#34d399";
 
+const serpiente = [{x:10,y:1},{x:5,y:7},{x:12,y:15}];
 
 // Primera pintura del juego al cargar la página
 dibujarTodo();
@@ -24,12 +25,7 @@ function limpiarCanvas() {
 function dibujarTodo() {
   limpiarCanvas();
   dibujarTablero();
-  pintarParte(5, 5);
-  pintarParte(10, 2);
-  pintarParte(10, canvas.height/TAMANIO_CELDA - 1);
-  pintarParte(canvas.width/TAMANIO_CELDA - 1, 10);
-  pintarParte(0, 10);
-  pintarParte(canvas.width/TAMANIO_CELDA - 1, canvas.height/TAMANIO_CELDA - 1);
+  pintarSerpiente();
 }
 
 function dibujarTablero() {
@@ -56,5 +52,8 @@ function pintarParte(lineaX, lineaY) {
   ctx.strokeRect(TAMANIO_CELDA * lineaX, TAMANIO_CELDA * lineaY, TAMANIO_CELDA, TAMANIO_CELDA);
 }
 
-
-
+function pintarSerpiente(){
+  for(let i=0;i<serpiente.length;i++){
+    pintarParte(serpiente[i].x,serpiente[i].y);
+  }
+}
