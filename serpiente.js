@@ -10,10 +10,12 @@ const COLOR_PARTE = "#10b981";
 const COLOR_BORDE_PARTE = "#34d399";
 const COLOR_CABEZA = "#facc15";
 const COLOR_BORDE_CABEZA = "#b45309";
-const COLOR_COMIDA       = "#ec4899";
+const COLOR_COMIDA = "#ec4899";
 const COLOR_BORDE_COMIDA = "#f472b6";
 
-const serpiente = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }, { x: 7, y: 10 }, { x: 6, y: 10 }];
+let serpiente = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }, { x: 7, y: 10 }, { x: 6, y: 10 }];
+let comida = { x: 15, y: 10 };
+let puntaje = 0;
 
 let intervaloSerpiente = null;
 let direccionActual = "derecha";
@@ -140,14 +142,55 @@ function moverSerpiente() {
       break;
   }
   dibujarTodo();
+  if (atraparComida()) {
+    generarComida();
+    crecerSerpiente();
+    dibujarTodo();
+    puntaje += 1;
+    let cmpPuntaje = document.getElementById("puntaje");
+    cmpPuntaje.innerText = puntaje; 
+  }
 }
 
 function pintarComida() {
-  let comidaX = numeroAleatorio(0,canvas.width/TAMANIO_CELDA-1);
-  let comidaY = numeroAleatorio(0,canvas.height/TAMANIO_CELDA-1);
-  pintarParte(comidaX,comidaY,COLOR_COMIDA,COLOR_BORDE_COMIDA)
+  pintarParte(comida.x, comida.y, COLOR_COMIDA, COLOR_BORDE_COMIDA);
+}
+
+function generarComida() {
+  comida.x = numeroAleatorio(0, canvas.width / TAMANIO_CELDA - 1);
+  comida.y = numeroAleatorio(0, canvas.height / TAMANIO_CELDA - 1);
 }
 
 function numeroAleatorio(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function atraparComida() {
+  if (comida.x == serpiente[0].x && comida.y == serpiente[0].y) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function crecerSerpiente() {
+  let cola = serpiente[serpiente.length - 1];
+  let nueva_cola = {x:cola.x,y:cola.y};
+  switch (direccionActual) {
+    case "derecha":
+      nueva_cola.x = cola.x - 1;
+      break;
+    case "izquierda":
+      nueva_cola.x = cola.x + 1;
+      break;
+    case "arriba":
+      nueva_cola.y = cola.y + 1;
+      break;
+    case "abajo":
+      nueva_cola.y = cola.y - 1;
+      break;
+    default:
+      break;
+  }
+  serpiente.push(nueva_cola);
 }
