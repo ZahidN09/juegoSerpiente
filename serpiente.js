@@ -10,6 +10,8 @@ const COLOR_PARTE = "#10b981";
 const COLOR_BORDE_PARTE = "#34d399";
 const COLOR_CABEZA = "#facc15";
 const COLOR_BORDE_CABEZA = "#b45309";
+const COLOR_COMIDA       = "#ec4899";
+const COLOR_BORDE_COMIDA = "#f472b6";
 
 const serpiente = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }, { x: 7, y: 10 }, { x: 6, y: 10 }];
 
@@ -30,6 +32,7 @@ function dibujarTodo() {
   limpiarCanvas();
   dibujarTablero();
   pintarSerpiente();
+  pintarComida();
 }
 
 function dibujarTablero() {
@@ -139,10 +142,12 @@ function moverSerpiente() {
   dibujarTodo();
 }
 
-// function pintarComida() {
+function pintarComida() {
+  let comidaX = numeroAleatorio(0,canvas.width/TAMANIO_CELDA-1);
+  let comidaY = numeroAleatorio(0,canvas.height/TAMANIO_CELDA-1);
+  pintarParte(comidaX,comidaY,COLOR_COMIDA,COLOR_BORDE_COMIDA)
+}
 
-// }
-
-// function numeroAleatorio(min, max) {
-//   return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
+function numeroAleatorio(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
