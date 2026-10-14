@@ -76,10 +76,52 @@ function moverDerecha() {
   serpiente.pop();
 }
 
+function moverIzquierda() {
+  let posicion_cabeza = serpiente[0];
+  let nueva_posicion = {
+    x: posicion_cabeza.x - 1,
+    y: posicion_cabeza.y
+  };
+  serpiente.unshift(nueva_posicion);
+  serpiente.pop();
+}
+
+function moverArriba() {
+  let posicion_cabeza = serpiente[0];
+  let nueva_posicion = {
+    x: posicion_cabeza.x,
+    y: posicion_cabeza.y - 1
+  };
+  serpiente.unshift(nueva_posicion);
+  serpiente.pop();
+}
+
+function moverAbajo() {
+  let posicion_cabeza = serpiente[0];
+  let nueva_posicion = {
+    x: posicion_cabeza.x,
+    y: posicion_cabeza.y + 1
+  };
+  serpiente.unshift(nueva_posicion);
+  serpiente.pop();
+}
+
 function cambiarDireccion(direccion){
   switch(direccion){
     case "derecha":
       moverDerecha();
+      dibujarTodo();
+      break;
+    case "izquierda":
+      moverIzquierda();
+      dibujarTodo();
+      break;
+    case "arriba":
+      moverArriba();
+      dibujarTodo();
+      break;
+    case "abajo":
+      moverAbajo();
       dibujarTodo();
       break;
     default:
