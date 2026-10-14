@@ -35,11 +35,11 @@ function dibujarTodo() {
 function dibujarTablero() {
   ctx.strokeStyle = COLOR_CUADRICULA;
   ctx.beginPath();
-  for (let i = 0; i <= canvas.width; i += TAMANIO_CELDA) {
+  for (let i = 0; i < canvas.width; i += TAMANIO_CELDA) {
     ctx.moveTo(i, 0);
     ctx.lineTo(i, canvas.height);
   }
-  for (let i = 0; i <= canvas.height; i += TAMANIO_CELDA) {
+  for (let i = 0; i < canvas.height; i += TAMANIO_CELDA) {
     ctx.moveTo(0, i);
     ctx.lineTo(canvas.width, i);
 
@@ -47,23 +47,20 @@ function dibujarTablero() {
   ctx.stroke();
 }
 
-function pintarParte(lineaX, lineaY) {
-  ctx.fillStyle = COLOR_PARTE;
+function pintarParte(lineaX, lineaY, color_relleno, color_borde) {
+  ctx.fillStyle = color_relleno;
   ctx.fillRect(TAMANIO_CELDA * lineaX, TAMANIO_CELDA * lineaY, TAMANIO_CELDA, TAMANIO_CELDA)
-  ctx.strokeStyle = COLOR_BORDE_PARTE;
+  ctx.strokeStyle = color_borde;
   ctx.strokeRect(TAMANIO_CELDA * lineaX, TAMANIO_CELDA * lineaY, TAMANIO_CELDA, TAMANIO_CELDA);
 }
 
 function pintarCabeza() {
-  ctx.fillStyle = COLOR_CABEZA;
-  ctx.fillRect(TAMANIO_CELDA * serpiente[0].x, TAMANIO_CELDA * serpiente[0].y, TAMANIO_CELDA, TAMANIO_CELDA);
-  ctx.strokeStyle = COLOR_BORDE_CABEZA;
-  ctx.strokeRect(TAMANIO_CELDA * serpiente[0].x, TAMANIO_CELDA * serpiente[0].y, TAMANIO_CELDA, TAMANIO_CELDA);
+  pintarParte(serpiente[0].x, serpiente[0].y, COLOR_CABEZA, COLOR_BORDE_CABEZA);
 }
 
 function pintarSerpiente() {
   for (let i = 1; i < serpiente.length; i++) {
-    pintarParte(serpiente[i].x, serpiente[i].y);
+    pintarParte(serpiente[i].x, serpiente[i].y, COLOR_PARTE, COLOR_BORDE_PARTE);
   }
   pintarCabeza();
 }
@@ -141,3 +138,11 @@ function moverSerpiente() {
   }
   dibujarTodo();
 }
+
+// function pintarComida() {
+
+// }
+
+// function numeroAleatorio(min, max) {
+//   return Math.floor(Math.random() * (max - min + 1)) + min;
+// }
