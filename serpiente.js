@@ -32,19 +32,17 @@ function dibujarTodo() {
 
 function dibujarTablero() {
   ctx.strokeStyle = COLOR_CUADRICULA;
-
-  for (let i = 0; i < canvas.width; i += TAMANIO_CELDA) {
-    ctx.beginPath();
+  ctx.beginPath();
+  for (let i = 0; i <= canvas.width; i += TAMANIO_CELDA) {
     ctx.moveTo(i, 0);
     ctx.lineTo(i, canvas.height);
-    ctx.stroke();
   }
-  for (let i = 0; i < canvas.height; i += TAMANIO_CELDA) {
-    ctx.beginPath();
+  for (let i = 0; i <= canvas.height; i += TAMANIO_CELDA) {
     ctx.moveTo(0, i);
     ctx.lineTo(canvas.width, i);
-    ctx.stroke();
+
   }
+  ctx.stroke();
 }
 
 function pintarParte(lineaX, lineaY) {
