@@ -13,6 +13,7 @@ const COLOR_BORDE_CABEZA = "#b45309";
 
 const serpiente = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }, { x: 7, y: 10 }, { x: 6, y: 10 }];
 
+let intervaloSerpiente = null;
 // Primera pintura del juego al cargar la página
 dibujarTodo();
 
@@ -128,4 +129,18 @@ function cambiarDireccion(direccion){
       break;
   }
 
+}
+
+function iniciarJuego(){
+  if(intervaloSerpiente !== null) return;
+  intervaloSerpiente = setInterval(moverSerpiente,1000);
+}
+
+function pausarJuego(){
+  clearInterval(intervaloSerpiente);
+  intervaloSerpiente = null;
+}
+
+function moverSerpiente(){
+  console.log("moviendo");
 }
