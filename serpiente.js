@@ -65,3 +65,13 @@ function pintarSerpiente() {
   }
   pintarCabeza();
 }
+
+function moverDerecha() {
+  let posicion_cabeza = serpiente[0];
+  let nueva_posicion = {
+    x: posicion_cabeza.x + 1,
+    y: posicion_cabeza.y
+  };
+  serpiente.unshift(nueva_posicion);
+  serpiente.pop();
+}
