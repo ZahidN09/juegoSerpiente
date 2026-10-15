@@ -129,8 +129,9 @@ function moverSerpiente() {
   if (choque.estado) {
     let cmpEstado = document.getElementById("estado");
     clearInterval(intervaloSerpiente);
+    intervaloSerpiente = null;
     cmpEstado.innerText = "GAME OVER :( " + choque.causa;
-    alert("GAME OVER :( \n" + choque.causa + "\nPresiona Reiniciar para comenzar una nueva partida");
+    alert("GAME OVER :( \n" + choque.causa + "\nPuntaje final: " + puntaje + "\nPresiona Reiniciar para comenzar una nueva partida");
     return;
   }
   switch (direccionActual) {
@@ -226,4 +227,25 @@ function perder() {
     causa = "CHOCASTE CON EL BORDE";
   }
   return { estado, causa };
+}
+
+function reiniciarJuego() {
+  let cmpEstado = document.getElementById("estado");
+  let cmpPuntaje = document.getElementById("puntaje");
+
+
+  if (intervaloSerpiente != null) {
+    clearInterval(intervaloSerpiente);
+    intervaloSerpiente = null;
+  }
+
+  direccionActual = "derecha";
+  puntaje = 0;
+  cmpPuntaje.innerText = puntaje;
+
+  serpiente = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }, { x: 7, y: 10 }, { x: 6, y: 10 }];
+  comida = { x: 15, y: 10 };
+
+  dibujarTodo();
+  cmpEstado.innerText = "Listo";
 }
