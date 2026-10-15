@@ -22,6 +22,7 @@ let direccionActual = "derecha";
 const VELOCIDAD = 500;
 let velocidadActual = VELOCIDAD;
 let nuevaVelocidad = velocidadActual;
+let direccionSiguiente = "derecha";
 let estado = "reiniciar";
 let estadoNuevo = estado;
 
@@ -123,17 +124,17 @@ function moverAbajo() {
 
 function cambiarDireccion(direccion) {
   if (intervaloSerpiente == null) return;
-  if (!((direccion == "derecha" && direccionActual == "izquierda") ||
-    (direccion == "izquierda" && direccionActual == "derecha") ||
-    (direccion == "arriba" && direccionActual == "abajo") ||
-    (direccion == "abajo" && direccionActual == "arriba"))) {
-    direccionActual = direccion;
-    sonidoCambioDireccion.currentTime = 0;
-    sonidoCambioDireccion.play();
-  } else {
+  if ((direccion == "derecha"   && direccionActual == "izquierda") ||
+      (direccion == "izquierda" && direccionActual == "derecha")   ||
+      (direccion == "arriba"    && direccionActual == "abajo")     ||
+      (direccion == "abajo"     && direccionActual == "arriba")) {
     sonidoCambioDireccionNegado.currentTime = 0;
     sonidoCambioDireccionNegado.play();
+    return;
   }
+  direccionSiguiente = direccion;
+  sonidoCambioDireccion.currentTime = 0;
+  sonidoCambioDireccion.play();
 }
 
 function iniciarJuego() {
@@ -155,6 +156,7 @@ function pausarJuego() {
 }
 
 function moverSerpiente() {
+  direccionActual = direccionSiguiente;
   let choque = perder();
   if (choque.estado) {
     clearInterval(intervaloSerpiente);
@@ -292,6 +294,7 @@ function reiniciarJuego() {
   }
 
   direccionActual = "derecha";
+  direccionSiguiente = "derecha";
   puntaje = 0;
   cmpPuntaje.innerText = puntaje;
   velocidadActual = VELOCIDAD;
