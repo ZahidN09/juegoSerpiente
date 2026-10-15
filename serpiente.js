@@ -114,7 +114,12 @@ function moverAbajo() {
 }
 
 function cambiarDireccion(direccion) {
-  direccionActual = direccion;
+  if (!((direccion == "derecha" && direccionActual == "izquierda") ||
+    (direccion == "izquierda" && direccionActual == "derecha") ||
+    (direccion == "arriba" && direccionActual == "abajo") ||
+    (direccion == "abajo" && direccionActual == "arriba"))) {
+    direccionActual = direccion;
+  }
 }
 
 function iniciarJuego() {
@@ -248,7 +253,7 @@ function perder() {
       causa = "CHOCASTE CONTIGO";
     }
   }
-  
+
   return { estado, causa };
 }
 
