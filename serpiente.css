@@ -7,28 +7,72 @@
 
 body {
     min-height: 100vh;
-    background: linear-gradient(135deg, #0a0a1f, #150a2e);
+    background:
+        radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.20), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(236, 72, 153, 0.18), transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.08), transparent 55%),
+        linear-gradient(135deg, #0a0a1f, #150a2e);
     color: #e2e8f0;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Rejilla sutil sobre el fondo */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+    z-index: 0;
 }
 
 .contenedor-juego {
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 720px;
-    background: #14142b;
+    background: linear-gradient(160deg, #16162f 0%, #14142b 50%, #101024 100%);
     border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    padding: 26px;
+    border: 1px solid rgba(168, 85, 247, 0.28);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.55),
+        0 0 60px rgba(168, 85, 247, 0.15),
+        0 0 0 1px rgba(168, 85, 247, 0.08) inset;
     text-align: center;
+    overflow: hidden;
+}
+
+/* Línea de luz superior del contenedor */
+.contenedor-juego::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #a855f7, #22d3ee, transparent);
+    opacity: 0.8;
 }
 
 h1 {
     margin-bottom: 10px;
-    font-size: 32px;
+    font-size: 34px;
+    letter-spacing: 0.5px;
     color: #c084fc;
+    text-shadow:
+        0 0 10px rgba(192, 132, 252, 0.55),
+        0 0 30px rgba(168, 85, 247, 0.35);
 }
 
 .descripcion {
@@ -37,35 +81,83 @@ h1 {
     line-height: 1.5;
 }
 
+/* ======================
+   PANEL INFO
+   ====================== */
 .panel-info {
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     flex-wrap: wrap;
 }
 
 .tarjeta-info {
+    position: relative;
     flex: 1;
     min-width: 150px;
-    background: #1c1c3a;
-    padding: 14px;
+    background: linear-gradient(160deg, #202046, #1a1a38);
+    padding: 16px 14px;
     border-radius: 14px;
     border: 1px solid #2d2d5a;
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(168, 85, 247, 0.05) inset;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    overflow: hidden;
+}
+
+.tarjeta-info::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #a855f7, #22d3ee, transparent);
+}
+
+.tarjeta-info::after {
+    content: "";
+    position: absolute;
+    bottom: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.18), transparent 70%);
+    pointer-events: none;
+}
+
+.tarjeta-info:hover {
+    transform: translateY(-3px);
+    border-color: rgba(168, 85, 247, 0.6);
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.45),
+        0 0 24px rgba(168, 85, 247, 0.28);
 }
 
 .tarjeta-info span {
     display: block;
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     color: #a855f7;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    font-weight: bold;
 }
 
 .tarjeta-info strong {
-    font-size: 24px;
+    font-size: 26px;
     color: #22d3ee;
+    text-shadow:
+        0 0 8px rgba(34, 211, 238, 0.6),
+        0 0 20px rgba(34, 211, 238, 0.35);
 }
 
+/* ======================
+   CANVAS
+   ====================== */
 canvas {
     width: 100%;
     max-width: 500px;
@@ -73,9 +165,35 @@ canvas {
     border: 4px solid #a855f7;
     border-radius: 16px;
     display: block;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 22px auto;
+    box-shadow:
+        0 0 0 6px rgba(168, 85, 247, 0.08),
+        0 0 30px rgba(168, 85, 247, 0.45),
+        0 0 70px rgba(168, 85, 247, 0.20),
+        0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: auraCanvas 4s ease-in-out infinite;
 }
 
+@keyframes auraCanvas {
+    0%, 100% {
+        box-shadow:
+            0 0 0 6px rgba(168, 85, 247, 0.08),
+            0 0 30px rgba(168, 85, 247, 0.45),
+            0 0 70px rgba(168, 85, 247, 0.20),
+            0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    50% {
+        box-shadow:
+            0 0 0 6px rgba(168, 85, 247, 0.15),
+            0 0 40px rgba(168, 85, 247, 0.65),
+            0 0 90px rgba(168, 85, 247, 0.30),
+            0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* ======================
+   CONTROLES
+   ====================== */
 .controles {
     display: grid;
     grid-template-columns: repeat(3, 90px);
@@ -87,20 +205,36 @@ canvas {
 
 .controles button,
 .acciones button {
+    position: relative;
     border: none;
     border-radius: 12px;
     padding: 12px 16px;
-    background: #a855f7;
+    background: linear-gradient(160deg, #b06cf9, #a855f7 55%, #8b3ce0);
     color: #0a0a1f;
     font-weight: bold;
+    font-size: 15px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: transform 0.15s ease, box-shadow 0.25s ease, background 0.25s ease;
+    box-shadow:
+        0 4px 0 #6b21a8,
+        0 6px 16px rgba(168, 85, 247, 0.35);
 }
 
 .controles button:hover,
 .acciones button:hover {
-    transform: scale(1.05);
-    background: #c084fc;
+    transform: translateY(-2px);
+    background: linear-gradient(160deg, #c084fc, #a855f7 55%, #9333ea);
+    box-shadow:
+        0 6px 0 #6b21a8,
+        0 10px 24px rgba(192, 132, 252, 0.55);
+}
+
+.controles button:active,
+.acciones button:active {
+    transform: translateY(3px);
+    box-shadow:
+        0 1px 0 #6b21a8,
+        0 3px 10px rgba(168, 85, 247, 0.5);
 }
 
 .vacio {
@@ -115,17 +249,44 @@ canvas {
 }
 
 .acciones .secundario {
-    background: #ec4899;
+    background: linear-gradient(160deg, #f472b6, #ec4899 55%, #db2777);
     color: #0a0a1f;
+    box-shadow:
+        0 4px 0 #9d174d,
+        0 6px 16px rgba(236, 72, 153, 0.35);
 }
 
+.acciones .secundario:hover {
+    background: linear-gradient(160deg, #f9a8d4, #ec4899 55%, #e11d90);
+    box-shadow:
+        0 6px 0 #9d174d,
+        0 10px 24px rgba(244, 114, 182, 0.6);
+}
+
+.acciones .secundario:active {
+    box-shadow:
+        0 1px 0 #9d174d,
+        0 3px 10px rgba(236, 72, 153, 0.5);
+}
+
+/* ======================
+   MENSAJE
+   ====================== */
 .mensaje {
-    margin-top: 14px;
+    margin-top: 16px;
+    padding: 10px 14px;
     color: #cbd5e1;
     min-height: 24px;
     font-weight: bold;
+    background: rgba(168, 85, 247, 0.06);
+    border: 1px solid rgba(168, 85, 247, 0.18);
+    border-radius: 10px;
+    transition: color 0.3s ease, background 0.3s ease;
 }
 
+/* ======================
+   RESPONSIVE
+   ====================== */
 @media (max-width: 520px) {
     h1 {
         font-size: 24px;
