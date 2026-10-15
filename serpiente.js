@@ -116,7 +116,7 @@ function cambiarDireccion(direccion) {
 
 function iniciarJuego() {
   if (intervaloSerpiente !== null) return;
-  intervaloSerpiente = setInterval(moverSerpiente, 1000);
+  intervaloSerpiente = setInterval(moverSerpiente, 300);
 }
 
 function pausarJuego() {
@@ -125,6 +125,14 @@ function pausarJuego() {
 }
 
 function moverSerpiente() {
+  let choque = perder();
+  if (choque.estado) {
+    let cmpEstado = document.getElementById("estado");
+    clearInterval(intervaloSerpiente);
+    cmpEstado.innerText = "GAME OVER :( " + choque.causa;
+    alert("GAME OVER :( \n" + choque.causa + "\nPresiona Reiniciar para comenzar una nueva partida");
+    return;
+  }
   switch (direccionActual) {
     case "derecha":
       moverDerecha();
@@ -148,7 +156,7 @@ function moverSerpiente() {
     dibujarTodo();
     puntaje += 1;
     let cmpPuntaje = document.getElementById("puntaje");
-    cmpPuntaje.innerText = puntaje; 
+    cmpPuntaje.innerText = puntaje;
   }
 }
 
@@ -175,7 +183,7 @@ function atraparComida() {
 
 function crecerSerpiente() {
   let cola = serpiente[serpiente.length - 1];
-  let nueva_cola = {x:cola.x,y:cola.y};
+  let nueva_cola = { x: cola.x, y: cola.y };
   switch (direccionActual) {
     case "derecha":
       nueva_cola.x = cola.x - 1;
@@ -193,4 +201,29 @@ function crecerSerpiente() {
       break;
   }
   serpiente.push(nueva_cola);
+}
+
+function perder() {
+  let cabeza = serpiente[0];
+  let maxX = canvas.width / TAMANIO_CELDA - 1;
+  let maxY = canvas.height / TAMANIO_CELDA - 1;
+
+  let estado = false;
+  let causa = "";
+
+  let dx = 0, dy = 0;
+  if (direccionActual === "izquierda") dx = -1;
+  else if (direccionActual === "derecha") dx = 1;
+  else if (direccionActual === "arriba") dy = -1;
+  else if (direccionActual === "abajo") dy = 1;
+
+  let proximaX = cabeza.x + dx;
+  let proximaY = cabeza.y + dy;
+
+  if ((proximaX < 0 || proximaX > maxX) ||
+    (proximaY < 0 || proximaY > maxY)) {
+    estado = true;
+    causa = "CHOCASTE CON EL BORDE";
+  }
+  return { estado, causa };
 }
