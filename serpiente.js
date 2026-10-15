@@ -308,19 +308,19 @@ function reiniciarJuego() {
 }
 
 function ajustarVelocidad() {
-  if (puntaje >= 4) {
+  if (puntaje >= 40) {
     nuevaVelocidad = 100;
-  } else if (puntaje >= 3) {
+  } else if (puntaje >= 30) {
     nuevaVelocidad = 200;
-  } else if (puntaje >= 2) {
+  } else if (puntaje >= 20) {
     nuevaVelocidad = 300;
-  } else if (puntaje >= 1) {
+  } else if (puntaje >= 10) {
     nuevaVelocidad = 400;
   }
 
-  if (nuevaVelocidad !== velocidadActual) {
+  if (nuevaVelocidad != velocidadActual) {
     let cmpEstado = document.getElementById("estado");
-    let msgEstado = "Jugando. Velocidad: " + (112.5-(velocidadActual*0.125)).toFixed(0)+"%";
+    let msgEstado = "Jugando 🔥 Velocidad: " + (112.5-(velocidadActual*0.125)).toFixed(0)+"%";
     clearInterval(intervaloSerpiente);
     intervaloSerpiente = setInterval(moverSerpiente, nuevaVelocidad);
     velocidadActual = nuevaVelocidad;
@@ -346,33 +346,30 @@ function actualizarInterfaz(causaPerder) {
 
     switch (estado) {
       case "reiniciar":
-        msgDescripcion = "Consigue la mayor cantidad de puntos posible";
-        msgPuntaje = puntaje;
-        msgEstado = "Listo";
-        msgMensaje = "Presiona iniciar para comenzar."
+        msgDescripcion = "🐍 ¡A comer y crecer! ¿Cuántos puntos puedes lograr?";
+        msgEstado = "Listo 😎";
+        msgMensaje = "Presiona Iniciar cuando estés preparado. ¡La serpiente tiene hambre!"
         break;
       case "jugando":
-        msgDescripcion = "Consigue la mayor cantidad de puntos posible";
-        msgPuntaje = puntaje;
-        msgEstado = "Jugando. Velocidad: " + (112.5-(velocidadActual*0.125)).toFixed(0)+"%";
-        msgMensaje = "Usa las fechas para moverte."
+        msgDescripcion = "🐍 ¡A comer y crecer! ¿Cuántos puntos puedes lograr?";
+        msgEstado = "Jugando 🔥 Velocidad: " + (112.5-(velocidadActual*0.125)).toFixed(0)+"%";
+        msgMensaje = "Usa las flechas para moverte. ¡Cada bocado cuenta!"
         break;
       case "pausa":
-        msgDescripcion = "Tomate un descanso";
-        msgPuntaje = puntaje;
-        msgEstado = "En pausa";
-        msgMensaje = "Presiona iniciar para continuar."
+        msgDescripcion = "☕ Pausa merecida, respira tranquilo";
+        msgEstado = "En pausa ⏸️";
+        msgMensaje = "Presiona Iniciar para volver a la acción."
         break;
       case "perder":
-        msgDescripcion = "Intentalo de nuevo!";
-        msgPuntaje = puntaje;
-        msgEstado = "GAME OVER :(";
-        msgMensaje = causaPerder + " (Presiona reiniciar para jugar de nuevo)."
-        alert("GAME OVER :( \n" + causaPerder + "\nPuntaje final: " + puntaje + "\nPresiona Reiniciar para comenzar una nueva partida");
+        msgDescripcion = "💪 ¡Casi lo tienes! Inténtalo otra vez";
+        msgEstado = "GAME OVER 💀";
+        msgMensaje = causaPerder + " (Presiona Reiniciar para una revancha)."
+        alert("💀 GAME OVER 💀\n" + causaPerder + "\n\n🎯 Puntaje final: " + puntaje + "\n\nPresiona Reiniciar para intentarlo de nuevo 😉");
         break;
       default:
         break;
     }
+    msgPuntaje = puntaje;
     cmpDescripcion.innerText = msgDescripcion;
     cmpPuntaje.value = msgPuntaje;
     cmpEstado.innerText = msgEstado;
