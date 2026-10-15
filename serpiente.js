@@ -19,6 +19,9 @@ let puntaje = 0;
 
 let intervaloSerpiente = null;
 let direccionActual = "derecha";
+const VELOCIDAD = 500;
+let velocidadActual = VELOCIDAD;
+let nuevaVelocidad = velocidadActual;
 // Primera pintura del juego al cargar la página
 dibujarTodo();
 
@@ -116,7 +119,7 @@ function cambiarDireccion(direccion) {
 
 function iniciarJuego() {
   if (intervaloSerpiente !== null) return;
-  intervaloSerpiente = setInterval(moverSerpiente, 300);
+  intervaloSerpiente = setInterval(moverSerpiente, velocidadActual);
 }
 
 function pausarJuego() {
@@ -158,6 +161,7 @@ function moverSerpiente() {
     puntaje += 1;
     let cmpPuntaje = document.getElementById("puntaje");
     cmpPuntaje.innerText = puntaje;
+    ajustarVelocidad();
   }
 }
 
@@ -248,4 +252,22 @@ function reiniciarJuego() {
 
   dibujarTodo();
   cmpEstado.innerText = "Listo";
+}
+
+function ajustarVelocidad() {
+  if (puntaje >= 40) {
+    nuevaVelocidad = 100;
+  } else if (puntaje >= 30) {
+    nuevaVelocidad = 200;
+  } else if (puntaje >= 20) {
+    nuevaVelocidad = 300;
+  } else if (puntaje >= 10) {
+    nuevaVelocidad = 400;
+  }
+
+  if (nuevaVelocidad !== velocidadActual) {
+    clearInterval(intervaloSerpiente);
+    intervaloSerpiente = setInterval(moverSerpiente, nuevaVelocidad);
+    velocidadActual = nuevaVelocidad;
+  }
 }
