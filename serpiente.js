@@ -22,12 +22,17 @@ let direccionActual = "derecha";
 const VELOCIDAD = 500;
 let velocidadActual = VELOCIDAD;
 let nuevaVelocidad = velocidadActual;
+let estado = "reiniciar";
+let estadoNuevo = estado;
 
 //Sonidos
 const sonidoComer = new Audio("sonidos/comer.mp3");
 const sonidoPerder = new Audio("sonidos/gameOver.mp3");
 const sonidoCambioDireccion = new Audio("sonidos/cambioDireccion.mp3");
 const sonidoCambioDireccionNegado = new Audio("sonidos/cambioDireccionNegado.mp3");
+const sonidoInicio = new Audio("sonidos/inicio.mp3");
+const sonidoPause = new Audio("sonidos/pause.mp3");
+const sonidoReiniciar = new Audio("sonidos/reiniciar.mp3");
 
 // Primera pintura del juego al cargar la página
 dibujarTodo();
@@ -117,6 +122,7 @@ function moverAbajo() {
 }
 
 function cambiarDireccion(direccion) {
+  if (intervaloSerpiente == null) return;
   if (!((direccion == "derecha" && direccionActual == "izquierda") ||
     (direccion == "izquierda" && direccionActual == "derecha") ||
     (direccion == "arriba" && direccionActual == "abajo") ||
@@ -124,7 +130,7 @@ function cambiarDireccion(direccion) {
     direccionActual = direccion;
     sonidoCambioDireccion.currentTime = 0;
     sonidoCambioDireccion.play();
-  }else{
+  } else {
     sonidoCambioDireccionNegado.currentTime = 0;
     sonidoCambioDireccionNegado.play();
   }
@@ -133,23 +139,30 @@ function cambiarDireccion(direccion) {
 function iniciarJuego() {
   if (intervaloSerpiente !== null) return;
   intervaloSerpiente = setInterval(moverSerpiente, velocidadActual);
+  estadoNuevo = "jugando";
+  actualizarInterfaz();
+  sonidoInicio.currentTime = 0;
+  sonidoInicio.play();
 }
 
 function pausarJuego() {
   clearInterval(intervaloSerpiente);
   intervaloSerpiente = null;
+  estadoNuevo = "pausa";
+  actualizarInterfaz();
+  sonidoPause.currentTime = 0;
+  sonidoPause.play();
 }
 
 function moverSerpiente() {
   let choque = perder();
   if (choque.estado) {
-    let cmpEstado = document.getElementById("estado");
     clearInterval(intervaloSerpiente);
     intervaloSerpiente = null;
     sonidoPerder.currentTime = 0;
     sonidoPerder.play();
-    cmpEstado.innerText = "GAME OVER :( " + choque.causa;
-    alert("GAME OVER :( \n" + choque.causa + "\nPuntaje final: " + puntaje + "\nPresiona Reiniciar para comenzar una nueva partida");
+    estadoNuevo = "perder";
+    actualizarInterfaz(choque.causa);
     return;
   }
   switch (direccionActual) {
@@ -270,7 +283,6 @@ function perder() {
 }
 
 function reiniciarJuego() {
-  let cmpEstado = document.getElementById("estado");
   let cmpPuntaje = document.getElementById("puntaje");
 
 
@@ -282,28 +294,88 @@ function reiniciarJuego() {
   direccionActual = "derecha";
   puntaje = 0;
   cmpPuntaje.innerText = puntaje;
+  velocidadActual = VELOCIDAD;
+  nuevaVelocidad = VELOCIDAD;
 
   serpiente = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }, { x: 7, y: 10 }, { x: 6, y: 10 }];
   comida = { x: 15, y: 10 };
 
   dibujarTodo();
-  cmpEstado.innerText = "Listo";
+  estadoNuevo = "reiniciar";
+  actualizarInterfaz();
+  sonidoReiniciar.currentTime = 0;
+  sonidoReiniciar.play();
 }
 
 function ajustarVelocidad() {
-  if (puntaje >= 40) {
+  if (puntaje >= 4) {
     nuevaVelocidad = 100;
-  } else if (puntaje >= 30) {
+  } else if (puntaje >= 3) {
     nuevaVelocidad = 200;
-  } else if (puntaje >= 20) {
+  } else if (puntaje >= 2) {
     nuevaVelocidad = 300;
-  } else if (puntaje >= 10) {
+  } else if (puntaje >= 1) {
     nuevaVelocidad = 400;
   }
 
   if (nuevaVelocidad !== velocidadActual) {
+    let cmpEstado = document.getElementById("estado");
+    let msgEstado = "Jugando. Velocidad: " + (112.5-(velocidadActual*0.125)).toFixed(0)+"%";
     clearInterval(intervaloSerpiente);
     intervaloSerpiente = setInterval(moverSerpiente, nuevaVelocidad);
     velocidadActual = nuevaVelocidad;
+    cmpEstado.innerText = msgEstado;
+  }
+}
+
+
+function actualizarInterfaz(causaPerder) {
+  if (estadoNuevo !== estado) {
+    let cmpDescripcion = document.getElementById("txtdescripcion");
+    let cmpPuntaje = document.getElementById("puntaje");
+    let cmpEstado = document.getElementById("estado");
+    let cmpMensaje = document.getElementById("mensaje");
+
+
+    let msgDescripcion = "";
+    let msgPuntaje = "";
+    let msgEstado = "";
+    let msgMensaje = "";
+
+    estado = estadoNuevo;
+
+    switch (estado) {
+      case "reiniciar":
+        msgDescripcion = "Consigue la mayor cantidad de puntos posible";
+        msgPuntaje = puntaje;
+        msgEstado = "Listo";
+        msgMensaje = "Presiona iniciar para comenzar."
+        break;
+      case "jugando":
+        msgDescripcion = "Consigue la mayor cantidad de puntos posible";
+        msgPuntaje = puntaje;
+        msgEstado = "Jugando. Velocidad: " + (112.5-(velocidadActual*0.125)).toFixed(0)+"%";
+        msgMensaje = "Usa las fechas para moverte."
+        break;
+      case "pausa":
+        msgDescripcion = "Tomate un descanso";
+        msgPuntaje = puntaje;
+        msgEstado = "En pausa";
+        msgMensaje = "Presiona iniciar para continuar."
+        break;
+      case "perder":
+        msgDescripcion = "Intentalo de nuevo!";
+        msgPuntaje = puntaje;
+        msgEstado = "GAME OVER :(";
+        msgMensaje = causaPerder + " (Presiona reiniciar para jugar de nuevo)."
+        alert("GAME OVER :( \n" + causaPerder + "\nPuntaje final: " + puntaje + "\nPresiona Reiniciar para comenzar una nueva partida");
+        break;
+      default:
+        break;
+    }
+    cmpDescripcion.innerText = msgDescripcion;
+    cmpPuntaje.value = msgPuntaje;
+    cmpEstado.innerText = msgEstado;
+    cmpMensaje.innerText = msgMensaje;
   }
 }
