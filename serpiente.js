@@ -241,6 +241,14 @@ function perder() {
     estado = true;
     causa = "CHOCASTE CON EL BORDE";
   }
+
+  for (let i = 1; i < serpiente.length; i++) {
+    if (serpiente[i].x === proximaX && serpiente[i].y === proximaY) {
+      estado = true;
+      causa = "CHOCASTE CONTIGO";
+    }
+  }
+  
   return { estado, causa };
 }
 
