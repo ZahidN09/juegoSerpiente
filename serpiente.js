@@ -22,12 +22,15 @@ let direccionActual = "derecha";
 const VELOCIDAD = 500;
 let velocidadActual = VELOCIDAD;
 let nuevaVelocidad = velocidadActual;
+
+//Sonidos
+const sonidoComer = new Audio("sonidos/comer.mp3");
+const sonidoPerder = new Audio("sonidos/gameOver.mp3");
+const sonidoCambioDireccion = new Audio("sonidos/cambioDireccion.mp3");
+const sonidoCambioDireccionNegado = new Audio("sonidos/cambioDireccionNegado.mp3");
+
 // Primera pintura del juego al cargar la página
 dibujarTodo();
-
-// =========================
-// FUNCIONES DE DIBUJO
-// =========================
 
 function limpiarCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -119,6 +122,11 @@ function cambiarDireccion(direccion) {
     (direccion == "arriba" && direccionActual == "abajo") ||
     (direccion == "abajo" && direccionActual == "arriba"))) {
     direccionActual = direccion;
+    sonidoCambioDireccion.currentTime = 0;
+    sonidoCambioDireccion.play();
+  }else{
+    sonidoCambioDireccionNegado.currentTime = 0;
+    sonidoCambioDireccionNegado.play();
   }
 }
 
@@ -138,6 +146,8 @@ function moverSerpiente() {
     let cmpEstado = document.getElementById("estado");
     clearInterval(intervaloSerpiente);
     intervaloSerpiente = null;
+    sonidoPerder.currentTime = 0;
+    sonidoPerder.play();
     cmpEstado.innerText = "GAME OVER :( " + choque.causa;
     alert("GAME OVER :( \n" + choque.causa + "\nPuntaje final: " + puntaje + "\nPresiona Reiniciar para comenzar una nueva partida");
     return;
@@ -163,6 +173,8 @@ function moverSerpiente() {
     generarComida();
     crecerSerpiente();
     dibujarTodo();
+    sonidoComer.currentTime = 0;
+    sonidoComer.play();
     puntaje += 1;
     let cmpPuntaje = document.getElementById("puntaje");
     cmpPuntaje.innerText = puntaje;
