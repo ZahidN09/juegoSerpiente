@@ -170,8 +170,19 @@ function pintarComida() {
 }
 
 function generarComida() {
-  comida.x = numeroAleatorio(0, canvas.width / TAMANIO_CELDA - 1);
-  comida.y = numeroAleatorio(0, canvas.height / TAMANIO_CELDA - 1);
+  let colision;
+  do {
+    colision = false;
+    comida.x = numeroAleatorio(0, canvas.width / TAMANIO_CELDA - 1);
+    comida.y = numeroAleatorio(0, canvas.height / TAMANIO_CELDA - 1);
+
+    for (let i = 0; i < serpiente.length; i++) {
+      if (comida.x === serpiente[i].x && comida.y === serpiente[i].y) {
+        colision = true;
+        break;
+      }
+    }
+  } while (colision);
 }
 
 function numeroAleatorio(min, max) {
